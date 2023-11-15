@@ -9,6 +9,8 @@ import UIKit
 
 class NewPlaceViewController: UITableViewController {
 
+    @IBOutlet weak var imageOfPlace: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -22,6 +24,9 @@ class NewPlaceViewController: UITableViewController {
         
         if indexPath.row == 0 {
             
+            let cameraIcon = #imageLiteral(resourceName: "camera")
+            let photoIcon = #imageLiteral(resourceName: "photo")
+            
             let actionSheet = UIAlertController(title: nil, message: nil,
                                                 preferredStyle: .actionSheet)
             
@@ -29,11 +34,17 @@ class NewPlaceViewController: UITableViewController {
                 self.chooseImagePicker(source: .camera)
             }
             
+            camera.setValue(cameraIcon, forKey: "Image")
+            camera.setValue(CATextLayerAlignmentMode.left, forKey: "titleTextAlignment")
+            
             let photo = UIAlertAction (title: "Photo", style: .default) { _ in
                 self.chooseImagePicker(source: .photoLibrary)
             }
             
+            photo.setValue(photoIcon, forKey: "Image")
+            
             let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+            photo.setValue(CATextLayerAlignmentMode.left, forKey: "titleTextAlignment")
             
             actionSheet.addAction(camera)
             actionSheet.addAction(photo)
@@ -50,7 +61,7 @@ class NewPlaceViewController: UITableViewController {
 
 //MARK: Text field Delegate
 
-extension NewPlaceViewController: UITextFieldDelegate {
+extension NewPlaceViewController: UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     //скрываем клавиатуру по нажатию Done
     
@@ -69,11 +80,19 @@ extension NewPlaceViewController {
     
         if UIImagePickerController.isSourceTypeAvailable(source) {
             let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
             imagePicker.allowsEditing = true
             imagePicker.sourceType = source
             present(imagePicker, animated: true)
             }
         
         }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        imageOfPlace.image = info [.editedImage] as? UIImage
+        imageOfPlace.contentMode = .scaleAspectFill
+        imageOfPlace.clipsToBounds = true
+        dismiss(animated: true, completion: nil)
+    }
 }
 

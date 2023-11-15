@@ -9,11 +9,8 @@ import UIKit
 
 class MainViewController: UITableViewController {
     
-    var restarauntNames = [
-        "Burger Heroes", "Kitchen", "Bonsai", "Дастархан",
-        "Индокитай", "X.O", "Балкан Гриль", "Sherlock Holmes",
-        "Speak Easy", "Morris Pub", "Вкусные истории", "Классик",
-        "Love&Life", "Шок", "Бочка"]
+
+    let places = [Place(name: "Burger Heroes", location: "Ставрополь", type: "Забегаловка", image: "Burger Heroes")]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +22,7 @@ class MainViewController: UITableViewController {
   
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
-        return restarauntNames.count
+        return places.count
     }
 
     
@@ -34,20 +31,15 @@ class MainViewController: UITableViewController {
         
         
         
-        cell.nameLabel.text = restarauntNames[indexPath.row]
-        cell.ImageOfPlace.image = UIImage(named: restarauntNames[indexPath.row])
+        cell.nameLabel.text = places[indexPath.row].name
+        cell.locationLabel.text = places[indexPath.row].location
+        cell.typeLabel.text = places[indexPath.row].type
+        cell.ImageOfPlace.image = UIImage(named: places[indexPath.row].image)
         cell.ImageOfPlace.layer.cornerRadius = cell.ImageOfPlace.frame.size.height / 2
         cell.ImageOfPlace.clipsToBounds = true
 
         return cell
     }
-    
-    // MARK: Table view delegate
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 85
-    }
-
    
     /*
     // MARK: - Navigation
